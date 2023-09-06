@@ -46,9 +46,9 @@
             <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black"
                 onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  關閉側欄</a>
             <a href="../index/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  總覽</a>
-            <a href="../patients/" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-eye fa-fw"></i>  患者</a>
+            <a href="../patients/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  患者</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  醫護</a>
-            <a href="../sensors/" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  感測</a>
+            <a href="../sensors/" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-bullseye fa-fw"></i>  感測</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  訊息</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  記錄</a>
             <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  設定</a><br><br>
@@ -74,31 +74,21 @@
 
         <!-- Header -->
         <header class="w3-container" style="padding-top:22px">
-            <h5><b><i class="fa-solid fa-file-lines"></i> 患者總覽</b></h5>
+            <h5><b><i class="fa-solid fa-file-lines"></i> 感測器總覽</b></h5>
         </header>
 
         <div class="w3-row-padding w3-margin-bottom">
-            <div class="w3-quarter">
+            <div class="w3-third">
                 <div class="w3-container w3-red w3-padding-16">
                     <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
                     <div class="w3-right">
-                        <h3>52</h3>
+                        <h3>5,423</h3>
                     </div>
                     <div class="w3-clear"></div>
-                    <h4>獲得資訊</h4>
+                    <h6>近一日感測器數據量</h6>
                 </div>
             </div>
-            <div class="w3-quarter">
-                <div class="w3-container w3-blue w3-padding-16">
-                    <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
-                    <div class="w3-right">
-                        <h3>99</h3>
-                    </div>
-                    <div class="w3-clear"></div>
-                    <h4>觀測數量</h4>
-                </div>
-            </div>
-            <div class="w3-quarter">
+            <div class="w3-third">
                 <div class="w3-container w3-teal w3-padding-16">
                     <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
                     <div class="w3-right">
@@ -108,14 +98,14 @@
                     <h4>已連線感測器</h4>
                 </div>
             </div>
-            <div class="w3-quarter">
+            <div class="w3-third">
                 <div class="w3-container w3-orange w3-text-white w3-padding-16">
                     <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
                     <div class="w3-right">
                         <h3>50</h3>
                     </div>
                     <div class="w3-clear"></div>
-                    <h4>患者數</h4>
+                    <h4>已連接患者數</h4>
                 </div>
             </div>
         </div>
@@ -124,48 +114,23 @@
 
         <!-- Patient list by Vue3  -->
         <div class="w3-container" id="vue3-patientslist">
-            <h5>患者總表</h5>
+            <h5>傳感器資料總表</h5>
             <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
                 <tr>
-                    <th>患者姓名</th>
-                    <th>Age</th>
+                    <th>#</th>
+                    <th>sensor_type</th>
+                    <th>sensor_location</th>
+                    <th>installation_date</th>
+                    <th>patient_id</th>
                 </tr>
-                <tr v-for="patient in patients_data">
-                    <td>{{ patient.full_name }}</td>
-                    <td>{{ patient.age }}</td>
+                <tr v-for="sensor in sensor_data">
+                    <td>{{ sensor.sensor_id }}</td>
+                    <td>{{ sensor.sensor_type }}</td>
+                    <td>{{ sensor.location }}</td>
+                    <td>{{ sensor.installation_date }}</td>
+                    <td>{{ sensor.patient_id }}</td>
                 </tr>
             </table><br>
-        </div>
-
-        <div class="w3-container w3-section">
-
-            <button onclick="myAccordion('add_patient')" class="w3-button w3-white w3-border w3-block w3-left-align "><i class="fa-solid fa-file-circle-plus"></i> 新增患者</button>
-            <div id="add_patient" class="w3-hide w3-container w3-white w3-leftbar w3-padding-16">
-                <h4>新增患者</h4>
-                <!-- 表單提供填寫患者資料，新增至資料庫中 -->
-                <form class="w3-container" method="post" id="form-add-patient" v-on:submit.prevent>
-                    <label>Full name</label>
-                    <input class="w3-input w3-border" type="text" name="full_name" v-model="form_data.full_name">
-
-                    <label>Gender (M/F)</label>
-                    <select class="w3-select w3-border" name="gender" v-model="form_data.gender">
-                        <option value="" disabled selected></option>
-                        <option value="M">男</option>
-                        <option value="F">女</option>
-                    </select>
-
-                    <label>Age</label>
-                    <input class="w3-input w3-border" type="number" name="age" v-model="form_data.age">
-
-                    <label>Phone Number</label>
-                    <input class="w3-input w3-border" type="text" name="contact_number" v-model="form_data.contact_number">
-
-                    <!-- w3css form submit button -->
-                    <input class="w3-button w3-blue w3-green w3-block w3-margin-top" type="submit" @click.prevent="submit" value="Submit">
-                </form>
-            </div>
-
-
         </div>
 
         <!-- Footer -->
@@ -216,12 +181,12 @@
         const patients_list_app = Vue.createApp({
             data() {
                 return {
-                    patients_data: [],
+                    sensor_data: [],
                 }
             }, 
             mounted() {
                 axios
-                    .get('../api/patients/', {
+                    .get('../api/sensor', {
                         params: {
                             result: 'all'
                         }
@@ -229,46 +194,12 @@
                     .then(
                         (response)=> 
                         {
-                            this.patients_data = response.data;
+                            this.sensor_data = response.data;
                         }
                     )
             }
         }).mount('#vue3-patientslist');
 
-        //Vue3 Add New Patient Form
-        const add_new_patient_form_app = Vue.createApp({
-            data(){
-                return{
-                    form_data: {
-                        full_name: "", 
-                        gender: "",
-                        age: 18,
-                        contact_number: ""
-                    }, 
-                    form_submit_result: {}, 
-                }
-            }, 
-            methods: {
-                submit(){
-                    axios.postForm('../api/patients/', this.$data.form_data)
-                    .then(
-                        (response)=> {
-                            //response 回傳內容為json格式, key為result, value為內容, 存成物件於form_submit_result
-                            this.form_submit_result = response.data;
-                            console.log(this.form_submit_result);
-                            
-                            // 取得物件中第一個key, 並以此為標題, 顯示value內容
-                            swal(Object.keys(this.form_submit_result)[0], this.form_submit_result.success, "success"); 
-                            this.form_data.full_name="";
-                            this.form_data.gender="";
-                            this.form_data.age=18;
-                            this.form_data.contact_number="";
-                        }
-                    )
-                    return false;
-                }
-            }
-        }).mount('#form-add-patient');
     </script>
 
 </body>

@@ -54,7 +54,6 @@
     // 沒有HTTP Method參數，API回覆錯誤
     else{
         echo json_encode(array("error" => "No HTTP Method"));
-        echo json_encode($_POST);
         return;
     }
 ?>
