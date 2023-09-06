@@ -134,33 +134,31 @@
             </table><br>
         </div>
 
-        <hr>
-
-        <div class="w3-container">
+        <div class="w3-container w3-section">
 
             <button onclick="myAccordion('add_patient')" class="w3-button w3-white w3-border w3-block w3-left-align "><i class="fa-solid fa-file-circle-plus"></i> 新增患者</button>
             <div id="add_patient" class="w3-hide w3-container w3-white w3-leftbar w3-padding-16">
                 <h4>新增患者</h4>
                 <!-- 表單提供填寫患者資料，新增至資料庫中 -->
-                <form class="w3-container" action="post">
+                <form class="w3-container" method="post" id="form-add-patient" v-on:submit.prevent>
                     <label>Full name</label>
-                    <input class="w3-input w3-border" type="text" name="full_name">
+                    <input class="w3-input w3-border" type="text" name="full_name" v-model="full_name">
 
                     <label>Gender (M/F)</label>
-                    <select class="w3-select w3-border" name="gender">
+                    <select class="w3-select w3-border" name="gender" v-model="gender">
                         <option value="" disabled selected></option>
                         <option value="M">男</option>
                         <option value="F">女</option>
                     </select>
 
                     <label>Age</label>
-                    <input class="w3-input w3-border" type="number" name="age">
+                    <input class="w3-input w3-border" type="number" name="age" v-model="age">
 
                     <label>Phone Number</label>
-                    <input class="w3-input w3-border" type="number" name="contact_number">
+                    <input class="w3-input w3-border" type="text" name="contact_number" v-model="contact_number">
 
                     <!-- w3css form submit button -->
-                    <button class="w3-button w3-blue w3-green w3-block w3-margin-top">Submit</button>
+                    <input class="w3-button w3-blue w3-green w3-block w3-margin-top" type="submit" @click.prevent="submit" value="Submit">
                 </form>
             </div>
 
@@ -212,7 +210,7 @@
     </script>
     <script>
         // vue3 patients list
-        const app = Vue.createApp({
+        const patients_list_app = Vue.createApp({
             data() {
                 return {
                     patients_data: [],
@@ -233,6 +231,34 @@
                     )
             }
         }).mount('#vue3-patientslist');
+
+        //Vue3 Add New Patient Form
+        const add_new_patient_form_app = Vue.createApp({
+            data(){
+                return{
+                    full_name: "", 
+                    gender: "",
+                    age: 18,
+                    contact_number: ""
+                }
+            }, 
+            methods: {
+                submit(){
+                    axios.post('../api/patients/', {
+                        params: {
+                            result: 'all'
+                        }
+                    })
+                    .then(
+                        (response)=> 
+                        {
+                            this.patients_data = response.data;
+                        }
+                    )
+                    return false;
+                }
+            }
+        }).mount('#form-add-patient');
     </script>
 
 </body>
