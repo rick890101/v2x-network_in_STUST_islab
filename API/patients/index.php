@@ -35,8 +35,10 @@
         $age = $_POST["age"];
         $contact_number = $_POST["contact_number"];
         // PDO SQL語法，插入患者資料至資料表patients
-        $sql = "INSERT TO patients (full_name, gender, age, contact_phone) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO patients (full_name, gender, age, contact_number) VALUES (?, ?, ?, ?);";
+        // PDO prepare prepare statement
         $query = $PDO -> prepare($sql);
+
         // try-catch 錯誤處理
         try{
             $query -> execute(array($full_name, $gender, $age, $contact_number));
@@ -52,5 +54,7 @@
     // 沒有HTTP Method參數，API回覆錯誤
     else{
         echo json_encode(array("error" => "No HTTP Method"));
+        echo json_encode($_POST);
+        return;
     }
 ?>
