@@ -10,6 +10,7 @@
 
 - Vue 3
 - Axios
+- SweetAlert 2
 - w3css
 - jQuery
 - ApexChart
