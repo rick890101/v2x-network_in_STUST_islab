@@ -9,6 +9,7 @@
 ## 使用技術
 
 - Vue 3
+- Axios
 - w3css
 - jQuery
 - ApexChart
