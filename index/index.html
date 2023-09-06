@@ -22,10 +22,14 @@
 </head>
 
 <body class="w3-light-grey">
-    <!-- Javascript Vue3 -->
+    <!-- Javascript Vue3 + Axios -->
     <script src="../asset/vue-3/cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.global.min.js"
         integrity="sha512-Wbf9QOX8TxnLykSrNGmAc5mDntbpyXjOw9zgnKql3DgQ7Iyr5TCSPWpvpwDuo+jikYoSNMD9tRRH854VfPpL9A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../asset/axios/cdnjs.cloudflare.com_ajax_libs_axios_1.5.0_axios.min.js" 
+        integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
     <!-- Top container -->
     <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
@@ -136,35 +140,17 @@
 
         <div class="w3-container">
             <h5>平台最近新增患者</h5>
-            <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+            <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white" id="vue3-patientslist">
                 <tr>
                     <th>患者姓名</th>
                     <th>Age</th>
                 </tr>
-                <tr>
-                    <td>United States</td>
-                    <td>65%</td>
+                <!-- Vue3 patients list -->
+                <tr v-for="patient in patients_data">
+                    <td>{{ patient.full_name }}</td>
+                    <td>{{ patient.age }}</td>
                 </tr>
-                <tr>
-                    <td>UK</td>
-                    <td>15.7%</td>
-                </tr>
-                <tr>
-                    <td>Russia</td>
-                    <td>5.6%</td>
-                </tr>
-                <tr>
-                    <td>Spain</td>
-                    <td>2.1%</td>
-                </tr>
-                <tr>
-                    <td>India</td>
-                    <td>1.9%</td>
-                </tr>
-                <tr>
-                    <td>France</td>
-                    <td>1.5%</td>
-                </tr>
+
             </table><br>
             <a class="w3-button w3-dark-grey">瀏覽所有患者  <i class="fa fa-arrow-right"></i></a>
         </div>
@@ -202,6 +188,30 @@
             mySidebar.style.display = "none";
             overlayBg.style.display = "none";
         }
+
+        // vue3 patients list
+        const app = Vue.createApp({
+            data() {
+                return {
+                    patients_data: [],
+                }
+            }, 
+            mounted() {
+                axios
+                    .get('../api/patients/', {
+                        params: {
+                            result: 'new', 
+                            count: 5
+                        }
+                    })
+                    .then(
+                        (response)=> 
+                        {
+                            this.patients_data = response.data;
+                        }
+                    )
+            }
+        }).mount('#vue3-patientslist');
     </script>
 
 </body>
